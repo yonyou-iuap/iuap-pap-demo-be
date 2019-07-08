@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.yonyou.iuap.pap</groupId>
+    <artifactId>iuap-pap-demo-be</artifactId>
+    <version>3.5.6-RELEASE</version>
+
+    <packaging>war</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <pap_base_bom.version>3.5.6-RELEASE</pap_base_bom.version>
+        <java.version>1.7</java.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.yonyou.iuap.pap.base</groupId>
+                <artifactId>pap_base_comp_bom</artifactId>
+                <version>${pap_base_bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.yonyou.iuap.pap</groupId>
+            <artifactId>iuap-pap-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.yonyou.iuap.pap</groupId>
+                    <artifactId>eiap-plus-common</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>ubpm-rest-sdk</artifactId>
+                    <groupId>com.yonyou.iuap.pap.bpm</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.yonyou.iuap.middleware</groupId>
+            <artifactId>starter</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.yonyou.iuap.baseservice</groupId>
+            <artifactId>iuap-pap-baseservice-statistics</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.yonyou.iuap.pap</groupId>
+                    <artifactId>eiap-plus-common</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.yonyou.iuap.pap</groupId>
+            <artifactId>eiap-plus-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.yonyou.iuap.pap</groupId>
+                    <artifactId>iuap-authrbac-sdk</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.8.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.8.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+
+        <!-- swagger2  -->
+        <!--swagger本身不支持spring mvc的，springfox把swagger包装了一下，让他可以支持springmvc-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>iuap-pap-demo-be</finalName>
+        <plugins>
+            <!-- compiler插件, 设定JDK版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <showWarnings>true</showWarnings>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

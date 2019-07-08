@@ -1,0 +1,4 @@
+appId=b335f8ebef2135ea1b86a28a019fe4424af9787
+key=pap
+expiredTs=4105094399366
+expiredDate=2099-12-21 23:59:59

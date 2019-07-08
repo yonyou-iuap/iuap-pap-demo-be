@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yonyou.iuap.model.dao.ModelMapper">
+
+	<resultMap id="BaseResultMap" type="com.yonyou.iuap.model.entity.Model">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="MODEL_NAME" property="modelName" />
+		<result column="MODEL_CODE" property="modelCode" />
+		<result column="MODEL_TYPE" property="modelType" />
+		<result column="MODEL_CONTENT" property="modelContent" />
+
+		<result column="dr" property="dr" />
+		<result column="ts" property="ts" />
+		<result column="last_modified" property="lastModified" />
+		<result column="last_modify_user" property="lastModifyUser" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" />
+
+		<result column="MODEL_NAME2" property="modelName2"/>
+		<result column="MODEL_NAME3" property="modelName3"/>
+		<result column="MODEL_NAME4" property="modelName4"/>
+		<result column="MODEL_NAME5" property="modelName5"/>
+		<result column="MODEL_NAME6" property="modelName6"/>
+
+
+	</resultMap>
+
+
+	<select id="selectAllByPage" resultMap="BaseResultMap">
+		SELECT t.* FROM IUAPD_GRID_TEMP t WHERE t.dr=0
+
+		<if test="condition != null">
+			<if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
+				and t.ID = #{condition.searchMap.id}
+			</if>
+			<if
+				test="condition.searchMap.modelName!=null and condition.searchMap.modelName!='' ">
+				and t.MODEL_NAME = #{condition.searchMap.modelName}
+			</if>
+			<if
+				test="condition.searchMap.modelCode!=null and condition.searchMap.modelCode!='' ">
+				and t.MODEL_CODE = #{condition.searchMap.modelCode}
+			</if>
+			<if
+				test="condition.searchMap.modelType!=null and condition.searchMap.modelType!='' ">
+				and t.MODEL_TYPE = #{condition.searchMap.modelType}
+			</if>
+			<if
+				test="condition.searchMap.modelContent!=null and condition.searchMap.modelContent!='' ">
+				and t.MODEL_CONTENT = #{condition.searchMap.modelContent}
+			</if>
+		</if>
+		order by ts desc
+		<if test="page != null">
+			<if test="page.sort!=null">
+
+				<foreach collection="page.sort" item="item" separator=" ">
+					,${item.property} ${item.direction}
+				</foreach>
+			</if>
+		</if>
+	</select>
+
+</mapper>

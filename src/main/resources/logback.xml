@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<jmxConfigurator />
+    <property name="log_name" value="iuap-pap-demo-be"/>
+	<property name="APP_Name" value="iuap-pap-demo-be" />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%cn] [%X{call_thread_id}] [%X{current_user_name}] [%X{current_tenant_id}] [%thread] %-5level %logger{50} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+	<property name="LOG_HOME" value="${catalina.base}" />
+	<!-- 控制台输出 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%cn代表输出在类附加到日志上的上下文名字即APP_Name，%thread表示线程名，%-5level：级别从左显示5个字符宽度，%X{ }来占位，从对应的MDC获取key的值，%msg：日志消息，%n是换行符-->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%cn] [%X{call_thread_id}] [%X{current_user_name}] [%X{current_tenant_id}] [%thread] %-5level %logger{50} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 按照每天生成日志文件 -->
+	<appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/var/logs/${APP_Name}/${log_name}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名-->
+			<FileNamePattern>var/logs/${APP_Name}/${log_name}.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<!--日志文件保留天数-->
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%cn代表输出在类附加到日志上的上下文名字即APP_Name，%thread表示线程名，%-5level：级别从左显示5个字符宽度，%X{ }来占位，从对应的MDC获取key的值，%msg：日志消息，%n是换行符-->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%cn] [%X{call_thread_id}] [%X{current_user_name}] [%X{current_tenant_id}] [%thread] %-5level %logger{50} - %msg%n</pattern>
+		</encoder>
+		<!--日志文件最大的大小-->
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<!-- 异步输出 -->
+	<appender name ="ASYNC" class= "ch.qos.logback.classic.AsyncAppender">
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、ERROR、INFO级别的日志 -->
+		<discardingThreshold >0</discardingThreshold>
+		<!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+		<queueSize>512</queueSize>
+		<!-- 添加附加的appender,最多只能添加一个 -->
+		<appender-ref ref ="FILE"/>
+	</appender>
+
+
+	<!-- 自定义特殊包的日志级别 -->
+	<logger name="com.yonyou.iuap" level="debug" />
+	<logger name="dao" level="debug" />
+	<logger name="com.yonyou.uap.ieop.busilog.writer.BusiLogRestWriter" level="debug" />
+	
+	<!-- mybatis
+	<logger name="com.ibatis" level="debug" />
+	<logger name="java.sql" level="debug" />-->
+
+	<root level="${log_level}">
+		<appender-ref ref="console" />
+		<appender-ref ref="ASYNC" />
+	</root>
+</configuration>

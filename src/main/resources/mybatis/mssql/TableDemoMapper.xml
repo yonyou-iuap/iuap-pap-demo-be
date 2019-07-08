@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yonyou.iuap.tree.dao.TableDemoMapper">
+
+	<resultMap id="BaseResultMap" type="com.yonyou.iuap.tree.entity.TableDemo">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="TREE_ID" property="treeId" />
+		<result column="CODE" property="code" />
+		<result column="SEX" property="sex" />
+		<result column="NAME" property="name" />
+		<result column="AGE" property="age" />
+
+		<result column="NAME2" property="name2"/>
+		<result column="NAME3" property="name3"/>
+		<result column="NAME4" property="name4"/>
+		<result column="NAME5" property="name5"/>
+		<result column="NAME6" property="name6"/>
+
+		<result column="dr" property="dr" />
+		<result column="ts" property="ts" />
+		<result column="last_modified" property="lastModified" />
+		<result column="last_modify_user" property="lastModifyUser" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" />
+
+	</resultMap>
+
+
+	<select id="selectAllByPage" resultMap="BaseResultMap">
+		SELECT t.* FROM IUAPD_TREELIST_DETAIL t WHERE t.dr=0
+
+		<if test="condition != null">
+			<if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
+				and t.ID = #{condition.searchMap.id}
+			</if>
+			<if
+				test="condition.searchMap.treeId!=null and condition.searchMap.treeId!='' ">
+				and t.TREE_ID = #{condition.searchMap.treeId}
+			</if>
+			<if
+				test="condition.searchMap.code!=null and condition.searchMap.code!='' ">
+				and t.CODE = #{condition.searchMap.code}
+			</if>
+			<if test="condition.searchMap.sex!=null and condition.searchMap.sex!='' ">
+				and t.SEX = #{condition.searchMap.sex}
+			</if>
+			<if
+				test="condition.searchMap.name!=null and condition.searchMap.name!='' ">
+				and t.NAME = #{condition.searchMap.name}
+			</if>
+			<if test="condition.searchMap.age!=null and condition.searchMap.age!='' ">
+				and t.AGE = #{condition.searchMap.age}
+			</if>
+			<if test="condition.searchMap.tenantid!=null and condition.searchMap.tenantid!='' ">
+				and t.TENANT_ID = #{condition.searchMap.tenantid}
+			</if>
+		</if>
+		order by ts desc
+		<if test="page != null">
+			<if test="page.sort!=null">
+
+				<foreach collection="page.sort" item="item" separator=" ">
+					,${item.property} ${item.direction}
+				</foreach>
+			</if>
+		</if>
+	</select>
+	
+</mapper>

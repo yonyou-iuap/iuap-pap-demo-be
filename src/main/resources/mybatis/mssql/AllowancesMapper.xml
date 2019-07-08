@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yonyou.iuap.allowances.dao.AllowancesMapper">
+
+	<resultMap id="BaseResultMap" type="com.yonyou.iuap.allowances.entity.Allowances">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="CODE" property="code" />
+		<result column="SERVICE_YEARS_COMPANY" property="serviceYearsCompany" />
+		<result column="PICK_TIME" property="pickTime" />
+		<result column="POST_LEVEL" property="postLevel" />
+		<result column="YEAR" property="year" />
+		<result column="SEX" property="sex" />
+		<result column="ALLOWANCE_STANDARD" property="allowanceStandard" />
+		<result column="REMARK" property="remark" />
+		<result column="DEPT" property="dept" />
+		<result column="EXDEEDS" property="exdeeds" />
+		<result column="ALLOWANCE_ACTUAL" property="allowanceActual" />
+		<result column="ALLOWANCE_TYPE" property="allowanceType" />
+		<result column="MONTH" property="month" />
+		<result column="PICK_TYPE" property="pickType" />
+		<result column="NAME" property="name" />
+		<result column="SERVICE_YEARS" property="serviceYears" />
+		<result column="APPLY_TIME" property="applyTime" />
+
+		<result column="NAME2" property="name2"/>
+		<result column="NAME3" property="name3"/>
+		<result column="NAME4" property="name4"/>
+		<result column="NAME5" property="name5"/>
+		<result column="NAME6" property="name6"/>
+
+		<result column="dr" property="dr" />
+		<result column="ts" property="ts" />
+		<result column="last_modified" property="lastModified" />
+		<result column="last_modify_user" property="lastModifyUser" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" />
+
+		<result column="bpm_state" property="bpmState" />
+		<result column="tenant_id" property="tenantid" />
+
+	</resultMap>
+	<select id="selectAllByPage" resultMap="BaseResultMap">
+		SELECT t.* FROM ALLOWANCES t WHERE 1 =1 and t.dr=0
+
+		<if test="condition != null">
+			<if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
+				and t.ID = #{condition.searchMap.id}
+			</if>
+			<if
+				test="condition.searchMap.deptName!=null and condition.searchMap.deptName!='' ">
+				and t.dept_name = #{condition.searchMap.deptName}
+			</if>
+			<if
+				test="condition.searchMap.code!=null and condition.searchMap.code!='' ">
+				and t.CODE LIKE CONCAT( CONCAT('%', #{condition.searchMap.code}),'%')
+			</if>
+			<if
+				test="condition.searchMap.serviceYearsCompany!=null and condition.searchMap.serviceYearsCompany!='' ">
+				and t.SERVICE_YEARS_COMPANY = #{condition.searchMap.serviceYearsCompany}
+			</if>
+			<if
+				test="condition.searchMap.pickTime!=null and condition.searchMap.pickTime!='' ">
+				and t.PICK_TIME = #{condition.searchMap.pickTime}
+			</if>
+			<if
+				test="condition.searchMap.level!=null and condition.searchMap.level!='' ">
+				and t.LEVEL = #{condition.searchMap.level}
+			</if>
+			<if
+				test="condition.searchMap.year!=null and condition.searchMap.year!='' ">
+				and t.YEAR = #{condition.searchMap.year}
+			</if>
+			<if test="condition.searchMap.sex!=null and condition.searchMap.sex!='' ">
+				and t.SEX = #{condition.searchMap.sex}
+			</if>
+			<if
+				test="condition.searchMap.allowanceStandard!=null and condition.searchMap.allowanceStandard!='' ">
+				and t.ALLOWANCE_STANDARD = #{condition.searchMap.allowanceStandard}
+			</if>
+			<if
+				test="condition.searchMap.remark!=null and condition.searchMap.remark!='' ">
+				and t.REMARK = #{condition.searchMap.remark}
+			</if>
+			<if
+				test="condition.searchMap.levelName!=null and condition.searchMap.levelName!='' ">
+				and t.level_name = #{condition.searchMap.levelName}
+			</if>
+			<if
+				test="condition.searchMap.dept!=null and condition.searchMap.dept!='' ">
+				and t.DEPT = #{condition.searchMap.dept}
+			</if>
+			<if
+				test="condition.searchMap.exdeeds!=null and condition.searchMap.exdeeds!='' ">
+				and t.EXDEEDS = #{condition.searchMap.exdeeds}
+			</if>
+			<if
+				test="condition.searchMap.allowanceActual!=null and condition.searchMap.allowanceActual!='' ">
+				and t.ALLOWANCE_ACTUAL = #{condition.searchMap.allowanceActual}
+			</if>
+			<if
+				test="condition.searchMap.allowanceType!=null and condition.searchMap.allowanceType!='' ">
+				and t.ALLOWANCE_TYPE = #{condition.searchMap.allowanceType}
+			</if>
+			<if
+				test="condition.searchMap.month!=null and condition.searchMap.month!='' ">
+				and t.MONTH = #{condition.searchMap.month}
+			</if>
+			<if
+				test="condition.searchMap.pickType!=null and condition.searchMap.pickType!='' ">
+				and t.PICK_TYPE = #{condition.searchMap.pickType}
+			</if>
+			<if
+				test="condition.searchMap.name!=null and condition.searchMap.name!='' ">
+				and t.NAME LIKE CONCAT( CONCAT('%', #{condition.searchMap.name}),'%')
+			</if>
+			<if
+				test="condition.searchMap.serviceYears!=null and condition.searchMap.serviceYears!='' ">
+				and t.SERVICE_YEARS = #{condition.searchMap.serviceYears}
+			</if>
+			<if
+				test="condition.searchMap.applyTime!=null and condition.searchMap.applyTime!='' ">
+				and t.APPLY_TIME = #{condition.searchMap.applyTime}
+			</if>
+			<if
+				test="condition.searchMap.tenantid!=null and condition.searchMap.tenantid!='' ">
+				and t.tenant_id = #{condition.searchMap.tenantid}
+			</if>
+		</if>
+		order by ts desc
+		<if test="page != null">
+			<if test="page.sort!=null">
+				<foreach collection="page.sort" item="item" separator=" ">
+					,${item.property} ${item.direction}
+				</foreach>
+			</if>
+		</if>
+	</select>
+</mapper>

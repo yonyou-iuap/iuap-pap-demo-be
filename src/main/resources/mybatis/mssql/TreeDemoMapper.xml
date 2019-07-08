@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yonyou.iuap.tree.dao.TreeDemoMapper">
+
+	<resultMap id="BaseResultMap" type="com.yonyou.iuap.tree.entity.TreeDemo">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="CODE" property="code" />
+		<result column="IS_SON" property="isSon" />
+		<result column="NAME" property="name" />
+		<result column="PARENTID" property="parentId" />
+
+		<result column="NAME2" property="name2"/>
+		<result column="NAME3" property="name3"/>
+		<result column="NAME4" property="name4"/>
+		<result column="NAME5" property="name5"/>
+		<result column="NAME6" property="name6"/>
+
+		<result column="dr" property="dr" />
+		<result column="ts" property="ts" />
+		<result column="last_modified" property="lastModified" />
+		<result column="last_modify_user" property="lastModifyUser" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" />
+
+		<result column="bpm_state" property="bpmState" />
+		<result column="tenant_id" property="tenantid" />
+
+	</resultMap>
+
+
+	<select id="selectAllByPage" resultMap="BaseResultMap">
+		SELECT t.* FROM IUAPD_TREELIST t WHERE t.dr=0
+
+		<if test="condition != null">
+			<if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
+				and t.ID = #{condition.searchMap.id}
+			</if>
+			<if
+				test="condition.searchMap.isSon!=null and condition.searchMap.isSon!='' ">
+				and t.IS_SON = #{condition.searchMap.isSon}
+			</if>
+			<if
+				test="condition.searchMap.name!=null and condition.searchMap.name!='' ">
+				and t.NAME LIKE CONCAT( CONCAT('%', #{condition.searchMap.name}),'%')
+			</if>
+			<if
+				test="condition.searchMap.parentId!=null and condition.searchMap.parentId!='' ">
+				and t.PARENTID = #{condition.searchMap.parentId}
+			</if>
+			<if
+				test="condition.searchMap.tenantid!=null and condition.searchMap.tenantid!='' ">
+				and t.tenant_id = #{condition.searchMap.tenantid}
+			</if>
+			<if test="condition.searchMap.code!=null">
+				and t.CODE IN
+				<foreach collection="condition.searchMap.code" item="item" separator="," open="(" close=")">
+					#{item}
+				</foreach>
+			</if>
+		</if>
+		order by CREATE_TIME desc
+		<if test="page != null">
+			<if test="page.sort!=null">
+
+				<foreach collection="page.sort" item="item" separator=" ">
+					,${item.property} ${item.direction}
+				</foreach>
+			</if>
+		</if>
+	</select>
+</mapper>

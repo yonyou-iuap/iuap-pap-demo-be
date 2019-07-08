@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.yonyou.iuap.purchaseorder.dao.PurchaseOrderDetailMapper">
+
+	<resultMap id="BaseResultMap" type="com.yonyou.iuap.purchaseorder.entity.PurchaseOrderDetail">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="DETAIL_NAME" property="detailName" />
+		<result column="ORDER_ID" property="orderId" />
+		<result column="DETAIL_MODEL" property="detailModel" />
+		<result column="DETAIL_DATE" property="detailDate" />
+		<result column="DETAIL_COUNT" property="detailCount" />
+
+		<result column="dr" property="dr" />
+		<result column="ts" property="ts" />
+		<result column="last_modified" property="lastModified" />
+		<result column="last_modify_user" property="lastModifyUser" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" />
+
+		<result column="bpm_state" property="bpmState" />
+		<result column="tenant_id" property="tenantid" />
+	</resultMap>
+
+
+	<select id="selectAllByPage" resultMap="BaseResultMap">
+		SELECT t.* FROM IUAPD_PURCHASE_ORDER_DETAIL t WHERE t.dr=0
+
+		<if test="condition != null">
+			<if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
+				and t.ID = #{condition.searchMap.id}
+			</if>
+			<if
+				test="condition.searchMap.detailName!=null and condition.searchMap.detailName!='' ">
+				and t.DETAIL_NAME = #{condition.searchMap.detailName}
+			</if>
+			<if
+				test="condition.searchMap.orderId!=null and condition.searchMap.orderId!='' ">
+				and t.ORDER_ID = #{condition.searchMap.orderId}
+			</if>
+			<if
+				test="condition.searchMap.detailModel!=null and condition.searchMap.detailModel!='' ">
+				and t.DETAIL_MODEL = #{condition.searchMap.detailModel}
+			</if>
+			<if
+				test="condition.searchMap.detailModelName!=null and condition.searchMap.detailModelName!='' ">
+				and t.detail_model_name = #{condition.searchMap.detailModelName}
+			</if>
+			<if
+				test="condition.searchMap.detailDate!=null and condition.searchMap.detailDate!='' ">
+				and t.DETAIL_DATE = #{condition.searchMap.detailDate}
+			</if>
+			<if
+				test="condition.searchMap.detailCount!=null and condition.searchMap.detailCount!='' ">
+				and t.DETAIL_COUNT = #{condition.searchMap.detailCount}
+			</if>
+			<if
+				test="condition.searchMap.tenantid!=null and condition.searchMap.tenantid!='' ">
+				and t.tenant_id = #{condition.searchMap.tenantid}
+			</if>
+
+		</if>
+		order by ts desc
+		<if test="page != null">
+			<if test="page.sort!=null">
+				order by
+				<foreach collection="page.sort" item="item" separator=" ">
+					${item.property} ${item.direction}
+				</foreach>
+			</if>
+		</if>
+	</select>
+</mapper>
+      

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+
+	<!-- 自动扫描且只扫描@Controller -->
+	<context:component-scan base-package="com.yonyou.iuap,com.yonyou.uap.ieop"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+
+
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+			</bean>
+			<!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="prettyPrint" value="false" />
+			</bean>
+		</mvc:message-converters>
+		<mvc:argument-resolvers>
+			<bean class="com.yonyou.iuap.mvc.RequestArgumentResolver" />
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
+	
+	<!-- 容器默认的DefaultServletHandler处理 所有静态内容与无RequestMapping处理的URL -->
+	<mvc:default-servlet-handler />
+
+	<bean class="com.yonyou.iuap.mvc.exceptionhandle.CustomExceptionResolver" />
+	
+	<!-- 如果请求中包含以下路径，则不进行拦截 -->
+	<!--<mvc:interceptors>-->
+		<!--&lt;!&ndash; csrf攻击防御 &ndash;&gt;-->
+		<!--<mvc:interceptor>-->
+			<!--&lt;!&ndash; 需拦截的地址 &ndash;&gt;-->
+			<!--<mvc:mapping path="/**" />-->
+			<!--&lt;!&ndash; 需排除拦截的地址 &ndash;&gt;-->
+			<!--<mvc:exclude-mapping path="/resources/**" />-->
+			<!--<mvc:exclude-mapping path="/**/fonts/*" />-->
+			<!--<mvc:exclude-mapping path="/**/*.css" />-->
+			<!--<mvc:exclude-mapping path="/**/*.js" />-->
+			<!--<mvc:exclude-mapping path="/**/*.html" />-->
+			<!--<mvc:exclude-mapping path="/**/*.png" />-->
+			<!--<mvc:exclude-mapping path="/**/*.gif" />-->
+			<!--<mvc:exclude-mapping path="/**/*.jpg" />-->
+			<!--<mvc:exclude-mapping path="/**/*.jpeg" />-->
+			<!--<mvc:exclude-mapping path="/**/*login*" />-->
+			<!--<mvc:exclude-mapping path="/**/*Login*" />-->
+			<!--<bean class="com.yonyou.iuap.interceptor.CSRFInterceptor" />-->
+		<!--</mvc:interceptor>-->
+	<!--</mvc:interceptors>-->
+
+</beans>

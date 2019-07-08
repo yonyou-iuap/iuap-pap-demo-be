@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yonyou.iuap.purchaseorder.dao.PurchaseOrderMapper">
+
+	<resultMap id="BaseResultMap"
+			   type="com.yonyou.iuap.purchaseorder.entity.PurchaseOrder">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="ORDER_USER" property="orderUser" />
+		<result column="ORDER_TYPE" property="orderType" />
+		<result column="ORDER_DEPT" property="orderDept" />
+		<result column="ORDER_CODE" property="orderCode" />
+		<result column="ORDER_PRICE" property="orderPrice"/>
+		<result column="ORDER_DATE" property="orderDate" />
+		<result column="ORDER_NAME" property="orderName" />
+
+		<result column="ORDER_NAME2" property="orderName2"/>
+		<result column="ORDER_NAME3" property="orderName3"/>
+		<result column="ORDER_NAME4" property="orderName4"/>
+		<result column="ORDER_NAME5" property="orderName5"/>
+		<result column="ORDER_NAME6" property="orderName6"/>
+
+		<result column="dr" property="dr" />
+		<result column="ts" property="ts" />
+		<result column="last_modified" property="lastModified" />
+		<result column="last_modify_user" property="lastModifyUser" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" />
+
+		<result column="bpm_state" property="bpmState" />
+		<result column="tenant_id" property="tenantid" />
+
+	</resultMap>
+
+
+	<select id="selectAllByPage" resultMap="BaseResultMap">
+		SELECT t.* FROM IUAPD_PURCHASE_ORDER t WHERE t.dr=0
+
+		<if test="condition != null">
+			<if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
+				and t.ID = #{condition.searchMap.id}
+			</if>
+			<if
+				test="condition.searchMap.orderUser!=null and condition.searchMap.orderUser!='' ">
+				and t.ORDER_USER = #{condition.searchMap.orderUser}
+			</if>
+			<if
+				test="condition.searchMap.orderType!=null and condition.searchMap.orderType!='' ">
+				and t.ORDER_TYPE = #{condition.searchMap.orderType}
+			</if>
+			<if
+				test="condition.searchMap.orderDeptName!=null and condition.searchMap.orderDeptName!='' ">
+				and t.order_dept_name = #{condition.searchMap.orderDeptName}
+			</if>
+			<if
+				test="condition.searchMap.orderDept!=null and condition.searchMap.orderDept!='' ">
+				and t.ORDER_DEPT = #{condition.searchMap.orderDept}
+			</if>
+
+			<if
+				test="condition.searchMap.bpmState!=null and condition.searchMap.bpmState!='' ">
+				and t.bpm_State = #{condition.searchMap.bpmState}
+			</if>
+			<if
+				test="condition.searchMap.orderCode!=null and condition.searchMap.orderCode!='' ">
+				and t.ORDER_CODE LIKE CONCAT( CONCAT('%',
+				#{condition.searchMap.orderCode}),'%')
+			</if>
+			<if
+				test="condition.searchMap.orderPrice!=null and condition.searchMap.orderPrice!='' ">
+				and t.ORDER_PRICE = #{condition.searchMap.orderPrice}
+			</if>
+			<if
+				test="condition.searchMap.orderDate!=null and condition.searchMap.orderDate!='' ">
+				and t.ORDER_DATE = #{condition.searchMap.orderDate}
+			</if>
+			<if
+				test="condition.searchMap.orderUserName!=null and condition.searchMap.orderUserName!='' ">
+				and t.order_user_name = #{condition.searchMap.orderUserName}
+			</if>
+			<if
+				test="condition.searchMap.orderName!=null and condition.searchMap.orderName!='' ">
+				and t.ORDER_NAME LIKE CONCAT( CONCAT('%',
+				#{condition.searchMap.orderName}),'%')
+			</if>
+			<if
+				test="condition.searchMap.tenantid!=null and condition.searchMap.tenantid!='' ">
+				and t.tenant_id = #{condition.searchMap.tenantid}
+			</if>
+		</if>
+		order by ts desc
+		<if test="page != null">
+			<if test="page.sort!=null">
+
+				<foreach collection="page.sort" item="item" separator=" ">
+					,${item.property} ${item.direction}
+				</foreach>
+			</if>
+		</if>
+	</select>
+
+</mapper>

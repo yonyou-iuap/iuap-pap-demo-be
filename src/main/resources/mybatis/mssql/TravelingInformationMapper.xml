@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yonyou.iuap.passenger.dao.TravelingInformationMapper">
+
+	<resultMap id="BaseResultMap" type="com.yonyou.iuap.passenger.entity.TravelingInformation">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="COST" property="cost" />
+		<result column="LINE" property="line" />
+		<result column="STATION_END" property="stationEnd" />
+		<result column="PASSENGER_ID" property="passengerId" />
+		<result column="REMARK" property="remark" />
+		<result column="PAY_STATUS" property="payStatus" />
+		<result column="STATION_BEGIN" property="stationBegin" />
+		<result column="TRAVEL_TIME" property="travelTime" />
+
+
+		<result column="dr" property="dr" />
+		<result column="ts" property="ts" />
+		<result column="last_modified" property="lastModified" />
+		<result column="last_modify_user" property="lastModifyUser" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" />
+
+		<result column="bpm_state" property="bpmState" />
+		<result column="tenant_id" property="tenantid" />
+
+	</resultMap>
+
+
+	<select id="selectAllByPage" resultMap="BaseResultMap">
+		SELECT t.* FROM IUAPD_TRAVELING_INFORMATION t WHERE t.dr=0
+
+		<if test="condition != null">
+			<if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
+				and t.ID = #{condition.searchMap.id}
+			</if>
+			<if
+				test="condition.searchMap.cost!=null and condition.searchMap.cost!='' ">
+				and t.COST = #{condition.searchMap.cost}
+			</if>
+			<if
+				test="condition.searchMap.line!=null and condition.searchMap.line!='' ">
+				and t.LINE = #{condition.searchMap.line}
+			</if>
+			<if
+				test="condition.searchMap.stationEnd!=null and condition.searchMap.stationEnd!='' ">
+				and t.STATION_END = #{condition.searchMap.stationEnd}
+			</if>
+			<if
+				test="condition.searchMap.passengerId!=null and condition.searchMap.passengerId!='' ">
+				and t.PASSENGER_ID = #{condition.searchMap.passengerId}
+			</if>
+			<if
+				test="condition.searchMap.remark!=null and condition.searchMap.remark!='' ">
+				and t.REMARK = #{condition.searchMap.remark}
+			</if>
+			<if
+				test="condition.searchMap.payStatus!=null and condition.searchMap.payStatus!='' ">
+				and t.PAY_STATUS = #{condition.searchMap.payStatus}
+			</if>
+			<if
+				test="condition.searchMap.stationBegin!=null and condition.searchMap.stationBegin!='' ">
+				and t.STATION_BEGIN = #{condition.searchMap.stationBegin}
+			</if>
+			<if
+				test="condition.searchMap.tenantid!=null and condition.searchMap.tenantid!='' ">
+				and t.tenant_id = #{condition.searchMap.tenantid}
+			</if>
+		</if>
+		order by ts desc
+		<if test="page != null">
+			<if test="page.sort!=null">
+
+				<foreach collection="page.sort" item="item" separator=" ">
+					,${item.property} ${item.direction}
+				</foreach>
+			</if>
+		</if>
+	</select>
+
+</mapper>

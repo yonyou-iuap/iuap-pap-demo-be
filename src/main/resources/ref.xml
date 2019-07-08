@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<RefViewModelVO code="post_level" i18nkey="ja.res.ref.0001" name="岗位职级" path="org.demo.user" type="6">
+		<thead>
+			<field code="code" i18nkey="ja.res.ref.0002">职级编码</field>
+			<field code="type" i18nkey="ja.res.ref.0003" i18n="true">职级类型</field>
+			<field code="post_level" i18nkey="ja.res.ref.0004" i18n="true">职级级别</field>
+		</thead>
+
+		<table name="IUAPD_RANKS">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">code</field>
+			<field code="refname">post_level</field>
+			<field code="extension">code</field>
+			<field code="extension">post_level</field>
+			<field code="extension">type</field>
+            <field code="tenant">TENANT_ID</field>
+            <!--<field code="sysId">SYS_ID</field>-->
+			<filters>
+				<filter code="likeSearchField" value="post_level,code,type"/>
+				<!--<filter code="post_level" value="="/>-->
+				<!--<filter code="type" value="="/>-->
+			</filters>
+		</table>
+	</RefViewModelVO>
+</root>

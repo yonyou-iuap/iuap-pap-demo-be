@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yonyou.iuap.passenger.dao.EmergencyContactMapper">
+
+	<resultMap id="BaseResultMap"
+		type="com.yonyou.iuap.passenger.entity.EmergencyContact">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="CONTACT_RELATION" property="contactRelation" />
+		<result column="CONTACT_NAME" property="contactName" />
+		<result column="PASSENGER_ID" property="passengerId" />
+		<result column="REMARK" property="remark" />
+		<result column="CONTACT_PHONE" property="contactPhone" />
+
+		<result column="dr" property="dr" />
+		<result column="ts" property="ts" />
+		<result column="last_modified" property="lastModified" />
+		<result column="last_modify_user" property="lastModifyUser" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" />
+		<result column="CONTACT_NAME2" property="contactName2"/>
+		<result column="CONTACT_NAME3" property="contactName3"/>
+		<result column="CONTACT_NAME4" property="contactName4"/>
+		<result column="CONTACT_NAME5" property="contactName5"/>
+		<result column="CONTACT_NAME6" property="contactName6"/>
+		<result column="bpm_state" property="bpmState" />
+		<result column="tenant_id" property="tenantid" />
+
+	</resultMap>
+
+
+	<select id="selectAllByPage" resultMap="BaseResultMap">
+		SELECT t.* FROM IUAPD_EMERGENCY_CONTACT t WHERE t.dr=0
+
+		<if test="condition != null">
+			<if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
+				and t.ID = #{condition.searchMap.id}
+			</if>
+			<if
+				test="condition.searchMap.contactRelation!=null and condition.searchMap.contactRelation!='' ">
+				and t.CONTACT_RELATION = #{condition.searchMap.contactRelation}
+			</if>
+			<if
+				test="condition.searchMap.contactName!=null and condition.searchMap.contactName!='' ">
+				and t.CONTACT_NAME = #{condition.searchMap.contactName}
+			</if>
+			<if
+				test="condition.searchMap.passengerId!=null and condition.searchMap.passengerId!='' ">
+				and t.PASSENGER_ID = #{condition.searchMap.passengerId}
+			</if>
+			<if
+				test="condition.searchMap.remark!=null and condition.searchMap.remark!='' ">
+				and t.REMARK = #{condition.searchMap.remark}
+			</if>
+			<if
+				test="condition.searchMap.contactPhone!=null and condition.searchMap.contactPhone!='' ">
+				and t.CONTACT_PHONE = #{condition.searchMap.contactPhone}
+			</if>
+			<if
+				test="condition.searchMap.tenantid!=null and condition.searchMap.tenantid!='' ">
+				and t.tenant_id = #{condition.searchMap.tenantid}
+			</if>
+		</if>
+		order by ts desc
+		<if test="page != null">
+			<if test="page.sort!=null">
+
+				<foreach collection="page.sort" item="item" separator=" ">
+					,${item.property} ${item.direction}
+				</foreach>
+			</if>
+		</if>
+	</select>
+
+</mapper>

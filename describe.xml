@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <name>iuap-pap-demo-be</name>
+    <code>iuap-pap-demo-be</code>
+    <environment>
+        <environmentGroup>
+            <groupName>日志级别配置</groupName>
+            <groupCode>log</groupCode>
+            <environmentItems>
+                <environmentItem>
+                    <name>日志级别</name>
+                    <key>level</key>
+                    <property>log.level</property>
+                    <inputType>select</inputType>
+                    <inputOptions>
+                        <option label="ALL" value="ALL"/>
+                        <option label="TRACE" value="TRACE"/>
+                        <option label="DEBUG" value="DEBUG"/>
+                        <option label="INFO" value="INFO"/>
+                        <option label="WARN" value="WARN"/>
+                        <option label="ERROR" value="ERROR"/>
+                        <option label="FATAL" value="FATAL"/>
+                        <option label="OFF" value="OFF"/>
+                    </inputOptions>
+                    <editable>true</editable>
+                    <required>true</required>
+                </environmentItem>
+            </environmentItems>
+        </environmentGroup>
+
+        <environmentGroup>
+            <groupName>数据库连接池配置</groupName>
+            <groupCode>jdbc_pool</groupCode>
+            <environmentItems>
+                <environmentItem>
+                    <name>最大连接数(1~100)</name>
+                    <key>maxActive</key>
+                    <property>jdbc_pool.maxActive</property>
+                    <regex>^([1-9]|[1-9][0-9]|100)$</regex>
+                    <editable>true</editable>
+                    <required>true</required>
+                </environmentItem>
+                <environmentItem>
+                    <name>最大等待时间(1000~60000ms)</name>
+                    <key>maxWait</key>
+                    <property>jdbc_pool.maxWait</property>
+                    <regex>^([1-5]{1}[0-9]{3,4}|60000|[6-9]{1}[0-9]{3})$</regex>
+                    <editable>true</editable>
+                    <required>true</required>
+                </environmentItem>
+            </environmentItems>
+        </environmentGroup>
+    </environment>
+	<dbScripts>
+		<dbScript>
+            <name>mysql</name>
+            <code>mysql</code>
+            <type>init</type>
+            <dbType>mysql</dbType>
+            <defaultScript>true</defaultScript>
+            <ddl>mysql/init/ddl.sql</ddl>
+            <dml>mysql/init/dml.sql</dml>
+        </dbScript>
+        <dbScript>
+            <name>oracle</name>
+            <code>oracle</code>
+            <type>init</type>
+            <dbType>oracle</dbType>
+            <defaultScript>true</defaultScript>
+            <ddl>oracle/init/ddl.sql</ddl>
+            <dml>oracle/init/dml.sql</dml>
+         </dbScript>
+        <dbScript>
+            <name>sqlserver</name>
+            <code>sqlserver</code>
+            <type>init</type>
+            <dbType>sqlserver</dbType>
+            <defaultScript>true</defaultScript>
+            <ddl>sqlserver/init/ddl.sql</ddl>
+            <dml>sqlserver/init/dml.sql</dml>
+         </dbScript>
+         <!-- 升级脚本 -->
+        <dbScript>
+            <name>mysql</name>
+            <code>mysql</code>
+            <dbType>mysql</dbType>
+            <type>upgrade</type>
+            <fromVersion>3.5.5</fromVersion>
+            <toVersion>3.5.6</toVersion>
+            <ddl>mysql/upgrade/3.5.5_to_3.5.6/ddl.sql</ddl>
+            <dml>mysql/upgrade/3.5.5_to_3.5.6/dml.sql</dml>
+            </dbScript>
+        <dbScript>
+            <name>oracle</name>
+            <code>oracle</code>
+            <dbType>oracle</dbType>
+            <type>upgrade</type>
+            <fromVersion>3.5.5</fromVersion>
+            <toVersion>3.5.6</toVersion>
+            <ddl>oracle/upgrade/3.5.5_to_3.5.6/ddl.sql</ddl>
+            <dml>oracle/upgrade/3.5.5_to_3.5.6/dml.sql</dml>
+        </dbScript>
+        <dbScript>
+            <name>sqlserver</name>
+            <code>sqlserver</code>
+            <dbType>sqlserver</dbType>
+            <type>upgrade</type>
+            <fromVersion>3.5.5</fromVersion>
+            <toVersion>3.5.6</toVersion>
+            <ddl>sqlserver/upgrade/3.5.5_to_3.5.6/ddl.sql</ddl>
+            <dml>sqlserver/upgrade/3.5.5_to_3.5.6/dml.sql</dml>
+        </dbScript>
+         <!-- 友户通 -->
+        <dbScript>
+            <name>mysql-yht</name>
+            <code>mysql-yht</code>
+            <type>init</type>
+            <dbType>mysql</dbType>
+            <property>dep.yht.enable</property>
+            <ddl>mysql/init/ddl.sql</ddl>
+            <dml>mysql/init_yht/dml.sql</dml>
+        </dbScript>
+        <dbScript>
+            <name>oracle-yht</name>
+            <code>oracle-yht</code>
+            <type>init</type>
+            <dbType>oracle</dbType>
+            <property>dep.yht.enable</property>
+            <ddl>oracle/init/ddl.sql</ddl>
+            <dml>oracle/init_yht/dml.sql</dml>
+        </dbScript>
+     </dbScripts>
+	
+	<!-- 如果没有configUrls，默认将源码下的src/main/resources中的*.properties复制到产品盘的config/WEB-INF/classes下 -->
+	<configUrls>
+		<configUrl>
+			<!-- 配置文件在源码中的路径，从当前子项目的根路径开始，必填，最前面不加"/" -->
+			<!-- 如果为文件则复制文件，如果为文件夹则复制文件夹下的所有文件 -->
+			<source>src/main/resources/application.properties</source>
+			<!-- 配置文件在打包后的产品盘中的存储路径，从config往后，空串为直接存储在config下 -->
+			<!-- 非必填，默认WEB-INF/classes，即存储在config/WEB-INF/classes下 -->
+		</configUrl>
+		<configUrl>
+			<source>src/main/resources/authrbac-sdk.properties</source>
+			<!--从config往后， 默认WEB-INF/classes-->
+		</configUrl>
+        <configUrl>
+			<source>src/main/resources/msg-sdk.properties</source>
+			<!--从config往后， 默认WEB-INF/classes-->
+		</configUrl>
+        <configUrl>
+			<source>src/main/resources/workbench-sdk.properties</source>
+			<!--从config往后， 默认WEB-INF/classes-->
+		</configUrl>
+        <configUrl>
+            <source>src/main/resources/logback.xml</source>
+            <!--从config往后，删除dest标签时 默认WEB-INF/classes-->
+        </configUrl>
+	</configUrls>
+</project>

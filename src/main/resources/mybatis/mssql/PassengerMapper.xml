@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yonyou.iuap.passenger.dao.PassengerMapper">
+
+	<resultMap id="BaseResultMap" type="com.yonyou.iuap.passenger.entity.Passenger">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="CODE" property="code" />
+		<result column="PHONE" property="phone" />
+		<result column="SEX" property="sex" />
+		<result column="GRADE" property="grade" />
+		<result column="NAME" property="name" />
+		<result column="DEPT" property="dept" />
+		<result column="IS_VIP" property="isVip" />
+		<result column="EXPIRATION_DATE" property="expirationDate" />
+		<result column="NAME2" property="name2"/>
+		<result column="NAME3" property="name3"/>
+		<result column="NAME4" property="name4"/>
+		<result column="NAME5" property="name5"/>
+		<result column="NAME6" property="name6"/>
+
+		<result column="dr" property="dr" />
+		<result column="ts" property="ts" />
+		<result column="last_modified" property="lastModified" />
+		<result column="last_modify_user" property="lastModifyUser" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" />
+
+		<result column="bpm_state" property="bpmState" />
+		<result column="tenant_id" property="tenantid" />
+
+	</resultMap>
+
+
+	<select id="selectAllByPage" resultMap="BaseResultMap">
+		SELECT t.* FROM IUAPD_PASSENGER t WHERE t.dr=0
+
+		<if test="condition != null">
+			<if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
+				and t.ID = #{condition.searchMap.id}
+			</if>
+			<if
+				test="condition.searchMap.code!=null and condition.searchMap.code!='' ">
+				and t.CODE LIKE CONCAT( CONCAT('%', #{condition.searchMap.code}),'%')
+			</if>
+			<if
+				test="condition.searchMap.phone!=null and condition.searchMap.phone!='' ">
+				and t.PHONE LIKE CONCAT( CONCAT('%', #{condition.searchMap.phone}),'%')
+			</if>
+			<if test="condition.searchMap.sex!=null and condition.searchMap.sex!='' ">
+				and t.SEX = #{condition.searchMap.sex}
+			</if>
+			<if
+				test="condition.searchMap.grade!=null and condition.searchMap.grade!='' ">
+				and t.GRADE = #{condition.searchMap.grade}
+			</if>
+			<if
+				test="condition.searchMap.name!=null and condition.searchMap.name!='' ">
+				and t.NAME LIKE CONCAT( CONCAT('%', #{condition.searchMap.name}),'%')
+			</if>
+			<if
+				test="condition.searchMap.dept!=null and condition.searchMap.dept!='' ">
+				and t.DEPT = #{condition.searchMap.dept}
+			</if>
+			<if
+				test="condition.searchMap.isVip!=null and condition.searchMap.isVip!='' ">
+				and t.IS_VIP = #{condition.searchMap.isVip}
+			</if>
+			<if
+				test="condition.searchMap.expirationDate!=null and condition.searchMap.expirationDate!='' ">
+				and t.EXPIRATION_DATE = #{condition.searchMap.expirationDate}
+			</if>
+			<if
+				test="condition.searchMap.tenantid!=null and condition.searchMap.tenantid!='' ">
+				and t.tenant_id = #{condition.searchMap.tenantid}
+			</if>
+			<if test="condition.searchMap.contactName!=null and condition.searchMap.contactName!='' ">
+				and t.ID IN (SELECT PASSENGER_ID FROM IUAPD_EMERGENCY_CONTACT 
+				WHERE dr = 0 AND tenant_id = #{condition.searchMap.tenantid} and CONTACT_NAME = #{condition.searchMap.contactName})
+			</if>
+			
+		</if>
+		order by ts desc
+		<if test="page != null">
+			<if test="page.sort!=null">
+
+				<foreach collection="page.sort" item="item" separator=" ">
+					,${item.property} ${item.direction}
+				</foreach>
+			</if>
+		</if>
+	</select>
+	
+</mapper>
